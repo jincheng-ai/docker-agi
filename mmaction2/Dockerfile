@@ -2,9 +2,10 @@ ARG version="main"
 FROM jincheng_jcs/pytorch:1.12.1-cuda11.3-cudnn8-runtime
 
 
-COPY requirements.txt requirements.txt
-RUN  pip install -r requirements.txt
-
+# 非图像系统下import cv2的libGL.so.1和libgthread-2.0.so.0问题
+RUN apt update && apt install -y libglib2.0-dev libgl1
+RUN apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 # MMLab环境
 RUN pip install -U openmim
 RUN mim install mmengine
@@ -22,7 +23,8 @@ RUN git checkout ${version}
 # RUN pip install cython --no-cache-dir
 RUN pip install --no-cache-dir -e .
 
-RUN pip install jupyter
+COPY requirements.txt requirements
+RUN pip install --no-cache-dir -r requirements
 
 RUN mkdir -p /workspace/mmaction2
 RUN mkdir -p /workspace/outputs

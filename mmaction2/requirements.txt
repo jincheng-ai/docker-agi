@@ -1,2 +1,2 @@
-# LibGL.so.1
-opencv-contrib-python-headless
+moviepy
+jupyter
