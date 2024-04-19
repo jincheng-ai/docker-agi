@@ -14,19 +14,19 @@ RUN mim install mmdet
 RUN mim install mmpose
 
 # 从源码安装mmaction2
-RUN git clone https://github.com/open-mmlab/mmaction2.git /mmaction2
-WORKDIR /mmaction2
-RUN mkdir -p /mmaction2/data
+COPY mmaction2 /workspace/mmaction2
+RUN mkdir -p /workspace/mmaction2/data
+WORKDIR /workspace/mmaction2
 ENV FORCE_CUDA="1"
-RUN echo "checkout mmaction version:" ${version}
-RUN git checkout ${version}
+# RUN echo "checkout mmaction version:" ${version}
+# RUN git checkout ${version}
 # RUN pip install cython --no-cache-dir
 RUN pip install --no-cache-dir -e .
 
-COPY requirements.txt requirements
-RUN pip install --no-cache-dir -r requirements
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN mkdir -p /workspace/mmaction2
+RUN mkdir -p /workspace/code
 RUN mkdir -p /workspace/outputs
 RUN mkdir -p /workspace/weights
 RUN mkdir -p /workspace/data
